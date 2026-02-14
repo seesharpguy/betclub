@@ -3,6 +3,7 @@
 import { useAuth } from "@/lib/auth-context"
 import { useRouter } from "@/lib/router-context"
 import { SignIn } from "@/components/sign-in"
+import { NotInvited } from "@/components/not-invited"
 import { NavBar } from "@/components/nav-bar"
 import { DashboardView } from "@/components/dashboard-view"
 import { BetsFeed } from "@/components/bets-feed"
@@ -10,7 +11,7 @@ import { BetDetailView } from "@/components/bet-detail"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function HomePage() {
-  const { user, loading } = useAuth()
+  const { user, loading, rejected, clearRejection } = useAuth()
   const { route, params } = useRouter()
 
   if (loading) {
@@ -23,6 +24,10 @@ export default function HomePage() {
         </div>
       </div>
     )
+  }
+
+  if (rejected) {
+    return <NotInvited onTryAnother={clearRejection} />
   }
 
   if (!user) {

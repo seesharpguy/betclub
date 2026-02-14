@@ -2,6 +2,7 @@
 
 import { useAuth } from "@/lib/auth-context"
 import { useRouter } from "@/lib/router-context"
+import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -11,8 +12,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { LayoutDashboard, Receipt, LogOut, ChevronDown } from "lucide-react"
+import { LayoutDashboard, Receipt, LogOut, ChevronDown, Sun, Moon, UserPlus } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useState } from "react"
+import { InviteDialog } from "@/components/invite-dialog"
 
 const navLinks = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -20,8 +23,10 @@ const navLinks = [
 ]
 
 export function NavBar() {
-  const { user, signOut } = useAuth()
+  const { user, signOut, isAdmin } = useAuth()
+  const [inviteOpen, setInviteOpen] = useState(false)
   const { route, navigate } = useRouter()
+  const { theme, setTheme } = useTheme()
 
   if (!user) return null
 
@@ -33,20 +38,25 @@ export function NavBar() {
         .toUpperCase()
     : "?"
 
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark")
+  }
+
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-sm">
+    <>
+    <header className="sticky top-0 z-50 glass border-b border-border/50">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
         <div className="flex items-center gap-6">
           <button
             onClick={() => navigate("/dashboard")}
             className="flex items-center gap-2"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <span className="text-sm font-bold text-primary-foreground font-mono">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg gradient-primary glow-sm">
+              <span className="text-sm font-bold text-white font-mono">
                 B
               </span>
             </div>
-            <span className="text-lg font-bold tracking-tight">BetBook</span>
+            <span className="text-lg font-bold tracking-tight text-gradient">BetClub</span>
           </button>
           <nav className="hidden items-center gap-1 sm:flex">
             {navLinks.map((link) => {
@@ -113,6 +123,21 @@ export function NavBar() {
               })}
               <DropdownMenuSeparator />
             </div>
+            <DropdownMenuItem onClick={toggleTheme} className="gap-2">
+              {theme === "dark" ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
+              {theme === "dark" ? "Light Mode" : "Dark Mode"}
+            </DropdownMenuItem>
+            {isAdmin && (
+              <DropdownMenuItem onClick={() => setInviteOpen(true)} className="gap-2">
+                <UserPlus className="h-4 w-4" />
+                Invite User
+              </DropdownMenuItem>
+            )}
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={signOut} className="gap-2 text-destructive">
               <LogOut className="h-4 w-4" />
               Sign Out
@@ -121,5 +146,7 @@ export function NavBar() {
         </DropdownMenu>
       </div>
     </header>
+    {isAdmin && <InviteDialog open={inviteOpen} onOpenChange={setInviteOpen} />}
+    </>
   )
 }

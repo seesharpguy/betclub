@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { doc, onSnapshot, updateDoc, serverTimestamp } from "firebase/firestore"
+import { doc, onSnapshot, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { useAuth } from "@/lib/auth-context"
 import { useRouter } from "@/lib/router-context"
@@ -12,6 +12,17 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import {
@@ -22,6 +33,7 @@ import {
   Trophy,
   ArrowLeft,
   DollarSign,
+  Trash2,
 } from "lucide-react"
 
 function getInitials(name: string) {
@@ -38,13 +50,13 @@ const statusConfig: Record<
 > = {
   open: {
     label: "Open",
-    className: "bg-primary/10 text-primary border-primary/20",
+    className: "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20",
     icon: Clock,
     description: "Waiting for someone to take this bet.",
   },
   taken: {
     label: "Taken",
-    className: "bg-warning/10 text-warning-foreground border-warning/20",
+    className: "bg-primary/10 text-primary border-primary/20",
     icon: Handshake,
     description: "Bet accepted! Waiting for outcome.",
   },
@@ -63,7 +75,7 @@ const statusConfig: Record<
 }
 
 export function BetDetailView({ betId }: { betId: string }) {
-  const { user } = useAuth()
+  const { user, isAdmin } = useAuth()
   const { navigate } = useRouter()
   const [bet, setBet] = useState<Bet | null>(null)
   const [loading, setLoading] = useState(true)
@@ -181,6 +193,19 @@ export function BetDetailView({ betId }: { betId: string }) {
     }
   }
 
+  const handleCancelBet = async () => {
+    setActing(true)
+    try {
+      await deleteDoc(doc(db, "bets", bet.id))
+      toast.success("Bet cancelled and deleted.")
+      navigate("/bets")
+    } catch {
+      toast.error("Failed to cancel bet.")
+    } finally {
+      setActing(false)
+    }
+  }
+
   const winnerName =
     bet.winnerId === bet.creatorId
       ? bet.creatorName
@@ -199,9 +224,9 @@ export function BetDetailView({ betId }: { betId: string }) {
       </button>
 
       <Card>
-        <CardHeader className="flex flex-row items-start justify-between gap-4">
-          <div className="flex flex-col gap-1">
-            <CardTitle className="text-xl leading-relaxed text-balance">
+        <CardHeader className="flex flex-row items-start justify-between gap-4 overflow-hidden">
+          <div className="flex flex-col gap-1 min-w-0">
+            <CardTitle className="text-xl leading-relaxed text-balance break-words">
               {bet.description}
             </CardTitle>
             <div className="flex items-center gap-2 mt-1 flex-wrap">
@@ -217,7 +242,7 @@ export function BetDetailView({ betId }: { betId: string }) {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-1.5 rounded-lg bg-primary/10 px-3 py-2 shrink-0">
+          <div className="flex items-center gap-1.5 rounded-lg bg-primary/10 px-3 py-2 shrink-0 glow-sm">
             <DollarSign className="h-5 w-5 text-primary" />
             <span className="text-2xl font-bold font-mono text-primary">
               {bet.amount.toFixed(2)}
@@ -265,7 +290,7 @@ export function BetDetailView({ betId }: { betId: string }) {
           {bet.status === "settled" && winnerName && (
             <>
               <Separator />
-              <div className="flex items-center gap-3 rounded-lg bg-primary/5 p-4">
+              <div className="flex items-center gap-3 rounded-lg gradient-primary-subtle border border-primary/20 p-4">
                 <Trophy className="h-6 w-6 text-primary" />
                 <div>
                   <p className="font-semibold">
@@ -297,11 +322,77 @@ export function BetDetailView({ betId }: { betId: string }) {
               </Button>
             )}
 
-            {/* Open: creator sees waiting message */}
+            {/* Open: creator sees waiting message + cancel button */}
             {bet.status === "open" && isCreator && (
-              <p className="text-sm text-muted-foreground text-center py-2">
-                Waiting for someone to take your bet...
-              </p>
+              <div className="flex flex-col items-center gap-3 py-2">
+                <p className="text-sm text-muted-foreground text-center">
+                  Waiting for someone to take your bet...
+                </p>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      className="gap-2"
+                      disabled={acting}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      Cancel Bet
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Cancel this bet?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will permanently delete the bet. This action cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Keep Bet</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={handleCancelBet}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        Delete Bet
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            )}
+
+            {/* Open: admin (non-creator) can delete */}
+            {bet.status === "open" && !isCreator && isAdmin && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="gap-2"
+                    disabled={acting}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Delete Bet
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete this bet?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This will permanently delete {bet.creatorName}&apos;s bet. This action cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Keep Bet</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleCancelBet}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    >
+                      Delete Bet
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             )}
 
             {/* Taken: participants can declare winner */}

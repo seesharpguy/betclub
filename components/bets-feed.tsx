@@ -68,11 +68,7 @@ export function BetsFeed() {
           ) : openBets.length === 0 ? (
             <EmptyState message="No open bets yet. Be the first to create one!" />
           ) : (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {openBets.map((bet) => (
-                <BetCard key={bet.id} bet={bet} />
-              ))}
-            </div>
+            <BetGrid bets={openBets} />
           )}
         </TabsContent>
 
@@ -82,11 +78,7 @@ export function BetsFeed() {
           ) : activeBets.length === 0 ? (
             <EmptyState message="No active bets. Take an open bet to get started!" />
           ) : (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {activeBets.map((bet) => (
-                <BetCard key={bet.id} bet={bet} />
-              ))}
-            </div>
+            <BetGrid bets={activeBets} />
           )}
         </TabsContent>
 
@@ -96,14 +88,26 @@ export function BetsFeed() {
           ) : myBets.length === 0 ? (
             <EmptyState message="You haven't created or taken any bets yet." />
           ) : (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {myBets.map((bet) => (
-                <BetCard key={bet.id} bet={bet} />
-              ))}
-            </div>
+            <BetGrid bets={myBets} />
           )}
         </TabsContent>
       </Tabs>
+    </div>
+  )
+}
+
+function BetGrid({ bets }: { bets: Bet[] }) {
+  return (
+    <div className="grid gap-3 sm:grid-cols-2">
+      {bets.map((bet, i) => (
+        <div
+          key={bet.id}
+          className="animate-fade-in-up opacity-0"
+          style={{ animationDelay: `${i * 75}ms` }}
+        >
+          <BetCard bet={bet} />
+        </div>
+      ))}
     </div>
   )
 }
@@ -120,7 +124,7 @@ function BetListSkeleton() {
 
 function EmptyState({ message }: { message: string }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-12">
+    <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border/50 py-12 gradient-primary-subtle">
       <Receipt className="h-10 w-10 text-muted-foreground" />
       <p className="mt-3 text-sm text-muted-foreground">{message}</p>
     </div>

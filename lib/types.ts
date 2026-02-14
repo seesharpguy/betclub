@@ -16,4 +16,13 @@ export interface Bet {
   confirmedBy: string | null
   createdAt: Timestamp | null
   settledAt: Timestamp | null
+  paidOut?: boolean
+}
+
+export interface Invitation {
+  email: string
+  invitedBy: string
+  invitedByName: string
+  createdAt: Timestamp | null
+  status: "pending" | "accepted"
 }
