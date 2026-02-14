@@ -14,12 +14,12 @@ const statusConfig: Record<
 > = {
   open: {
     label: "Open",
-    className: "bg-primary/10 text-primary border-primary/20",
+    className: "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20",
     icon: Clock,
   },
   taken: {
     label: "Taken",
-    className: "bg-warning/10 text-warning-foreground border-warning/20",
+    className: "bg-primary/10 text-primary border-primary/20",
     icon: Handshake,
   },
   pending_resolution: {
@@ -52,7 +52,7 @@ export function BetCard({ bet }: { bet: Bet }) {
       onClick={() => navigate(`/bets/${bet.id}`)}
       className="text-left w-full"
     >
-      <Card className="group cursor-pointer transition-all hover:border-primary/30 hover:shadow-md">
+      <Card className="group cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:border-primary/30 hover:shadow-[0_0_20px_hsl(265_90%_65%/0.15)]">
         <CardContent className="flex flex-col gap-3 p-4">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-2.5 min-w-0">

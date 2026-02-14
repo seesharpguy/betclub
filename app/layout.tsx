@@ -13,13 +13,13 @@ const spaceMono = Space_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "BetBook - Peer-to-Peer Bets",
+  title: "BetClub - Peer-to-Peer Bets",
   description:
     "Place bets with friends, track who owes what, and settle up with a simple ledger.",
 }
 
 export const viewport: Viewport = {
-  themeColor: "#1a9a5c",
+  themeColor: "#0d0f1a",
   width: "device-width",
   initialScale: 1,
 }

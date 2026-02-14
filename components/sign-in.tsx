@@ -8,13 +8,13 @@ export function SignIn() {
   const { signIn } = useAuth()
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <Card className="w-full max-w-sm">
+    <div className="flex min-h-screen items-center justify-center px-4 gradient-primary-subtle">
+      <Card className="w-full max-w-sm glass border-border/30">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary">
-            <span className="text-2xl font-bold text-primary-foreground font-mono">B</span>
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl gradient-primary glow-purple">
+            <span className="text-2xl font-bold text-white font-mono">B</span>
           </div>
-          <CardTitle className="text-2xl font-bold tracking-tight">BetBook</CardTitle>
+          <CardTitle className="text-2xl font-bold tracking-tight text-gradient">BetClub</CardTitle>
           <CardDescription className="text-balance">
             Create bets with friends, track who owes what, and settle up.
           </CardDescription>
@@ -22,7 +22,7 @@ export function SignIn() {
         <CardContent>
           <Button
             onClick={signIn}
-            className="w-full gap-3"
+            className="w-full gap-3 gradient-primary border-0 hover:opacity-90 transition-opacity"
             size="lg"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">

@@ -9,8 +9,9 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { TrendingUp, TrendingDown, Minus } from "lucide-react"
+import { TrendingUp, TrendingDown, Minus, CheckCheck } from "lucide-react"
 
 export interface LedgerEntry {
   opponentId: string
@@ -19,6 +20,7 @@ export interface LedgerEntry {
   betsWon: number
   betsLost: number
   netBalance: number
+  unpaidLostBetIds: string[]
 }
 
 function getInitials(name: string) {
@@ -29,7 +31,15 @@ function getInitials(name: string) {
     .toUpperCase()
 }
 
-export function LedgerTable({ entries }: { entries: LedgerEntry[] }) {
+export function LedgerTable({
+  entries,
+  onSettleUp,
+  settlingOpponentId,
+}: {
+  entries: LedgerEntry[]
+  onSettleUp?: (opponentId: string, betIds: string[]) => void
+  settlingOpponentId?: string | null
+}) {
   if (entries.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-12">
@@ -42,7 +52,7 @@ export function LedgerTable({ entries }: { entries: LedgerEntry[] }) {
   }
 
   return (
-    <div className="rounded-lg border">
+    <div className="rounded-lg glass border-border/50">
       <Table>
         <TableHeader>
           <TableRow>
@@ -50,6 +60,7 @@ export function LedgerTable({ entries }: { entries: LedgerEntry[] }) {
             <TableHead className="text-center">Won</TableHead>
             <TableHead className="text-center">Lost</TableHead>
             <TableHead className="text-right">Net Balance</TableHead>
+            {onSettleUp && <TableHead className="text-right w-[100px]" />}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -78,7 +89,7 @@ export function LedgerTable({ entries }: { entries: LedgerEntry[] }) {
                 <span
                   className={cn(
                     "inline-flex items-center gap-1 font-mono text-sm font-bold",
-                    entry.netBalance > 0 && "text-primary",
+                    entry.netBalance > 0 && "text-success",
                     entry.netBalance < 0 && "text-destructive",
                     entry.netBalance === 0 && "text-muted-foreground"
                   )}
@@ -92,6 +103,24 @@ export function LedgerTable({ entries }: { entries: LedgerEntry[] }) {
                   {"$" + Math.abs(entry.netBalance).toFixed(2)}
                 </span>
               </TableCell>
+              {onSettleUp && (
+                <TableCell className="text-right">
+                  {entry.unpaidLostBetIds.length > 0 && entry.netBalance < 0 && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="gap-1.5 text-xs"
+                      disabled={settlingOpponentId === entry.opponentId}
+                      onClick={() => onSettleUp(entry.opponentId, entry.unpaidLostBetIds)}
+                    >
+                      <CheckCheck className="h-3.5 w-3.5" />
+                      {settlingOpponentId === entry.opponentId
+                        ? "Settling..."
+                        : "Settle Up"}
+                    </Button>
+                  )}
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>
