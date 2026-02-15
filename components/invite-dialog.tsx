@@ -58,24 +58,25 @@ export function InviteDialog({ open, onOpenChange }: InviteDialogProps) {
         status: "pending",
       })
 
-      // Create email doc for MailerSend extension
-      await addDoc(collection(db, "emails"), {
-        to: [{ email: normalizedEmail, name: normalizedEmail }],
-        from: { email: "noreply@betclub.app", name: "BetClub" },
-        subject: "You've been invited to BetClub",
-        html: `
-          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; padding: 40px 20px;">
-            <div style="text-align: center; margin-bottom: 32px;">
-              <div style="display: inline-block; width: 56px; height: 56px; line-height: 56px; border-radius: 16px; background: linear-gradient(135deg, #7c3aed, #a855f7); color: white; font-size: 24px; font-weight: bold; font-family: monospace;">B</div>
-              <h1 style="margin: 16px 0 0; font-size: 24px; font-weight: bold;">BetClub</h1>
+      // Create email doc for Firebase Trigger Email extension
+      await addDoc(collection(db, "mail"), {
+        to: [normalizedEmail],
+        message: {
+          subject: "You've been invited to BetClub",
+          text: `You've been invited to BetClub by ${user.displayName ?? "a member"}. Sign in with your Google account at https://betclub.app to get started.`,
+          html: `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; padding: 40px 20px;">
+              <div style="text-align: center; margin-bottom: 32px;">
+                <div style="display: inline-block; width: 56px; height: 56px; line-height: 56px; border-radius: 16px; background: linear-gradient(135deg, #7c3aed, #a855f7); color: white; font-size: 24px; font-weight: bold; font-family: monospace;">B</div>
+                <h1 style="margin: 16px 0 0; font-size: 24px; font-weight: bold;">BetClub</h1>
+              </div>
+              <p style="font-size: 16px; color: #374151;">You've been invited to BetClub by <strong>${user.displayName ?? "a member"}</strong>.</p>
+              <p style="font-size: 14px; color: #6b7280;">Sign in with your Google account at <a href="https://betclub.app" style="color: #7c3aed;">betclub.app</a> to get started.</p>
+              <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 32px 0;" />
+              <p style="font-size: 12px; color: #9ca3af; text-align: center;">You received this because someone invited you to BetClub.</p>
             </div>
-            <p style="font-size: 16px; color: #374151;">You've been invited to BetClub by <strong>${user.displayName ?? "a member"}</strong>.</p>
-            <p style="font-size: 14px; color: #6b7280;">Sign in with your Google account at <a href="https://betclub.app" style="color: #7c3aed;">betclub.app</a> to get started.</p>
-            <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 32px 0;" />
-            <p style="font-size: 12px; color: #9ca3af; text-align: center;">You received this because someone invited you to BetClub.</p>
-          </div>
-        `,
-        text: `You've been invited to BetClub by ${user.displayName ?? "a member"}. Sign in with your Google account at https://betclub.app to get started.`,
+          `,
+        },
       })
 
       toast.success(`Invitation sent to ${normalizedEmail}`)
