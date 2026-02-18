@@ -151,6 +151,7 @@ export function DashboardView() {
   const userSettledBets = settledBets.filter(
     (b) => b.creatorId === user.uid || b.takerId === user.uid
   )
+  const pushBets = userSettledBets.filter((b) => b.push === true)
   const wonBets = userSettledBets.filter((b) => b.winnerId === user.uid)
   const lostBets = userSettledBets.filter((b) => b.winnerId && b.winnerId !== user.uid)
   const totalWinnings = wonBets.reduce((sum, b) => sum + b.amount, 0)
@@ -167,8 +168,9 @@ export function DashboardView() {
   const netPosition = totalOwedToYou - totalYouOwe
 
   // Performance stats
-  const winRate = userSettledBets.length > 0
-    ? (wonBets.length / userSettledBets.length) * 100
+  const decisiveBets = wonBets.length + lostBets.length
+  const winRate = decisiveBets > 0
+    ? (wonBets.length / decisiveBets) * 100
     : 0
   const biggestWin = wonBets.length > 0
     ? Math.max(...wonBets.map((b) => b.amount))
@@ -185,6 +187,7 @@ export function DashboardView() {
   })
   let winStreak = 0
   for (const bet of sortedSettled) {
+    if (bet.push) continue
     if (bet.winnerId === user.uid) {
       winStreak++
     } else {
@@ -332,7 +335,7 @@ export function DashboardView() {
                 <MetricCard
                   label="Win Rate"
                   value={winRate.toFixed(0) + "%"}
-                  subtext={wonBets.length + " of " + userSettledBets.length + " bets"}
+                  subtext={wonBets.length + " of " + decisiveBets + " bets" + (pushBets.length > 0 ? ", " + pushBets.length + " push" + (pushBets.length !== 1 ? "es" : "") : "")}
                   icon={Target}
                 />
                 <MetricCard
@@ -589,7 +592,10 @@ function ActivityItem({
 
   let actionText: string
   let actionColor: string
-  if (bet.status === "settled" && bet.winnerId === userId) {
+  if (bet.status === "settled" && bet.push) {
+    actionText = "Push"
+    actionColor = "text-muted-foreground"
+  } else if (bet.status === "settled" && bet.winnerId === userId) {
     actionText = "Won"
     actionColor = "text-success"
   } else if (bet.status === "settled" && bet.winnerId && bet.winnerId !== userId) {

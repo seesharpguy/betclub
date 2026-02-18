@@ -16,6 +16,7 @@ export interface Bet {
   confirmedBy: string | null
   createdAt: Timestamp | null
   settledAt: Timestamp | null
+  push?: boolean
   paidOut?: boolean
 }
 
@@ -25,4 +26,18 @@ export interface Invitation {
   invitedByName: string
   createdAt: Timestamp | null
   status: "pending" | "accepted"
+}
+
+export interface Notification {
+  id: string
+  type: "bet_created" | "bet_taken"
+  betId: string
+  betDescription: string
+  betAmount: number
+  creatorName: string
+  creatorPhoto: string | null
+  takerName: string | null
+  takerPhoto: string | null
+  createdAt: Timestamp | null
+  processed: boolean
 }

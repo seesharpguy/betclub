@@ -1,0 +1,17 @@
+{
+  "name": "universal-notifier",
+  "version": "1.0.0",
+  "description": "Platform-agnostic Firebase notification service with multiple channels",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "axios": "^1.6.7",
+    "nodemailer": "^6.9.9",
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1",
+    "dotenv": "^16.4.1"
+  }
+}

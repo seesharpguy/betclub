@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betting App - Notifications Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #718096;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .channels {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .channels h2 {
+            margin-bottom: 16px;
+            color: #2d3748;
+        }
+
+        .channel-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .channel-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .channel-badge.active {
+            background: #48bb78;
+            color: white;
+        }
+
+        .channel-badge.inactive {
+            background: #e2e8f0;
+            color: #718096;
+        }
+
+        .notifications {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .notifications h2 {
+            margin-bottom: 16px;
+            color: #2d3748;
+        }
+
+        .notification-item {
+            border-left: 4px solid #667eea;
+            padding: 16px;
+            margin-bottom: 12px;
+            background: #f7fafc;
+            border-radius: 8px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-item.new {
+            border-left-color: #48bb78;
+            background: #f0fff4;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 8px;
+        }
+
+        .notification-type {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .notification-time {
+            font-size: 12px;
+            color: #a0aec0;
+        }
+
+        .notification-details {
+            color: #4a5568;
+            margin-bottom: 8px;
+        }
+
+        .notification-description {
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+        .notification-amount {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #a0aec0;
+        }
+
+        .empty-state .icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #48bb78;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎲 Betting App - Notifications Dashboard</h1>
+            <p><span class="status-indicator"></span> Live monitoring active</p>
+            <div id="notification-permission-banner" style="display: none; margin-top: 12px; padding: 12px; background: #fed7d7; border-radius: 8px; color: #c53030;">
+                <strong>⚠️ Desktop Notifications Blocked</strong>
+                <p style="margin: 4px 0 0 0; font-size: 14px;">Click "Allow" above to enable native OS toast notifications</p>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Received</h3>
+                <div class="value" id="total-count">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Bets Created</h3>
+                <div class="value" id="created-count">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Bets Taken</h3>
+                <div class="value" id="taken-count">0</div>
+            </div>
+        </div>
+
+        <div class="channels">
+            <h2>Active Channels</h2>
+            <div class="channel-list" id="channel-list">
+                <span class="channel-badge active">🌐 Web Dashboard</span>
+            </div>
+        </div>
+
+        <div class="notifications">
+            <h2>Recent Notifications</h2>
+            <div id="notification-list">
+                <div class="empty-state">
+                    <div class="icon">📭</div>
+                    <p>No notifications yet. Waiting for betting activity...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        let totalCount = 0;
+        let createdCount = 0;
+        let takenCount = 0;
+        let notificationsEnabled = false;
+
+        // Request notification permission on page load
+        async function requestNotificationPermission() {
+            if (!('Notification' in window)) {
+                console.log('Browser does not support notifications');
+                return false;
+            }
+
+            if (Notification.permission === 'granted') {
+                notificationsEnabled = true;
+                return true;
+            }
+
+            if (Notification.permission !== 'denied') {
+                const permission = await Notification.requestPermission();
+                notificationsEnabled = permission === 'granted';
+                return notificationsEnabled;
+            }
+
+            return false;
+        }
+
+        // Show native browser notification (appears as OS toast!)
+        function showBrowserNotification(notification) {
+            if (!notificationsEnabled) return;
+
+            let title, body, icon;
+
+            if (notification.type === 'bet_created') {
+                title = '🎲 New Bet Created!';
+                body = `${notification.creatorName} • $${notification.betAmount.toFixed(2)}\n${notification.betDescription}`;
+                icon = notification.creatorPhoto || undefined;
+            } else if (notification.type === 'bet_taken') {
+                title = '🤝 Bet Accepted!';
+                body = `${notification.creatorName} vs ${notification.takerName || 'Unknown'} • $${notification.betAmount.toFixed(2)}\n${notification.betDescription}`;
+                icon = notification.creatorPhoto || undefined;
+            }
+
+            const browserNotification = new Notification(title, {
+                body: body,
+                icon: icon,
+                badge: icon,
+                tag: notification.id, // Prevents duplicate notifications
+                requireInteraction: false, // Auto-close after a few seconds
+                silent: false // Play sound
+            });
+
+            // Auto-close after 10 seconds
+            setTimeout(() => browserNotification.close(), 10000);
+
+            // Optional: Click handler
+            browserNotification.onclick = () => {
+                window.focus();
+                browserNotification.close();
+            };
+        }
+
+        // Request permission when page loads
+        requestNotificationPermission().then(granted => {
+            if (!granted && Notification.permission === 'denied') {
+                document.getElementById('notification-permission-banner').style.display = 'block';
+            }
+        });
+
+        // Load config
+        fetch('/api/config')
+            .then(res => res.json())
+            .then(config => {
+                updateChannels(config.channels, config.webhookType);
+            });
+
+        // Load recent notifications
+        fetch('/api/notifications')
+            .then(res => res.json())
+            .then(notifications => {
+                if (notifications.length > 0) {
+                    document.querySelector('.empty-state')?.remove();
+                    notifications.reverse().forEach(notification => {
+                        addNotification(notification, false);
+                    });
+                }
+            });
+
+        // Listen for new notifications
+        socket.on('notification', (notification) => {
+            addNotification(notification, true);
+            showBrowserNotification(notification); // Show native OS toast!
+        });
+
+        socket.on('recent', (notifications) => {
+            // Already loaded via API
+        });
+
+        function updateChannels(channels, webhookType) {
+            const list = document.getElementById('channel-list');
+            list.innerHTML = '<span class="channel-badge active">🌐 Web Dashboard</span>';
+
+            if (channels.webhook) {
+                const type = webhookType === 'slack' ? 'Slack' :
+                             webhookType === 'discord' ? 'Discord' :
+                             webhookType === 'teams' ? 'Teams' : 'Webhook';
+                list.innerHTML += `<span class="channel-badge active">📢 ${type}</span>`;
+            }
+
+            if (channels.email) {
+                list.innerHTML += '<span class="channel-badge active">📧 Email</span>';
+            }
+
+            if (channels.telegram) {
+                list.innerHTML += '<span class="channel-badge active">📱 Telegram</span>';
+            }
+
+            if (channels.customWebhook) {
+                list.innerHTML += '<span class="channel-badge active">🔗 Custom Webhook</span>';
+            }
+        }
+
+        function addNotification(notification, isNew) {
+            const list = document.getElementById('notification-list');
+            const emptyState = list.querySelector('.empty-state');
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            totalCount++;
+            if (notification.type === 'bet_created') createdCount++;
+            if (notification.type === 'bet_taken') takenCount++;
+
+            document.getElementById('total-count').textContent = totalCount;
+            document.getElementById('created-count').textContent = createdCount;
+            document.getElementById('taken-count').textContent = takenCount;
+
+            const time = new Date(notification.createdAt?.toDate?.() || notification.receivedAt).toLocaleString();
+
+            const item = document.createElement('div');
+            item.className = 'notification-item' + (isNew ? ' new' : '');
+
+            if (notification.type === 'bet_created') {
+                item.innerHTML = `
+                    <div class="notification-header">
+                        <div class="notification-type">🎲 New Bet Created</div>
+                        <div class="notification-time">${time}</div>
+                    </div>
+                    <div class="notification-details">
+                        <strong>${notification.creatorName}</strong> created a new bet
+                    </div>
+                    <div class="notification-description">${notification.betDescription}</div>
+                    <div class="notification-amount">$${notification.betAmount.toFixed(2)}</div>
+                `;
+            } else if (notification.type === 'bet_taken') {
+                item.innerHTML = `
+                    <div class="notification-header">
+                        <div class="notification-type">🤝 Bet Accepted</div>
+                        <div class="notification-time">${time}</div>
+                    </div>
+                    <div class="notification-details">
+                        <strong>${notification.creatorName}</strong> vs <strong>${notification.takerName || 'Unknown'}</strong>
+                    </div>
+                    <div class="notification-description">${notification.betDescription}</div>
+                    <div class="notification-amount">$${notification.betAmount.toFixed(2)}</div>
+                `;
+            }
+
+            list.insertBefore(item, list.firstChild);
+
+            // Remove 'new' class after animation
+            if (isNew) {
+                setTimeout(() => {
+                    item.classList.remove('new');
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>

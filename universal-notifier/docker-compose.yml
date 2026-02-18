@@ -1,0 +1,21 @@
+# Docker Compose file for Universal Notifier
+# No version field needed for Docker Compose v2+
+
+services:
+  notifier:
+    build: .
+    container_name: betting-universal-notifier
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./serviceAccountKey.json:/app/serviceAccountKey.json:ro
+    ports:
+      - "${WEB_PORT:-5005}:5005"
+    environment:
+      - NODE_ENV=production
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

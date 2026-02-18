@@ -33,6 +33,7 @@ interface UserStats {
   totalBets: number
   wins: number
   losses: number
+  pushes: number
   winRate: number
   totalWagered: number
   netEarnings: number
@@ -63,6 +64,7 @@ function computeLeaderboard(bets: Bet[]): UserStats[] {
       totalBets: 0,
       wins: 0,
       losses: 0,
+      pushes: 0,
       winRate: 0,
       totalWagered: 0,
       netEarnings: 0,
@@ -85,8 +87,14 @@ function computeLeaderboard(bets: Bet[]): UserStats[] {
       taker.totalWagered += bet.amount
     }
 
-    // Count wins/losses for settled bets
-    if (bet.status === "settled" && bet.winnerId) {
+    // Count wins/losses/pushes for settled bets
+    if (bet.status === "settled" && bet.push) {
+      creator.pushes += 1
+      if (bet.takerId) {
+        const taker = map.get(bet.takerId)
+        if (taker) taker.pushes += 1
+      }
+    } else if (bet.status === "settled" && bet.winnerId) {
       const winnerId = bet.winnerId
       const loserId = winnerId === bet.creatorId ? bet.takerId : bet.creatorId
 
@@ -275,7 +283,7 @@ export function GroupDashboard() {
                   <TableHead className="w-10">#</TableHead>
                   <TableHead>Bettor</TableHead>
                   <TableHead className="text-center">Bets</TableHead>
-                  <TableHead className="text-center">W-L</TableHead>
+                  <TableHead className="text-center">W-L-P</TableHead>
                   <TableHead className="text-center">Win %</TableHead>
                   <TableHead className="text-right">Wagered</TableHead>
                   <TableHead className="text-right">Net Earnings</TableHead>
@@ -312,6 +320,8 @@ export function GroupDashboard() {
                       <span className="text-success">{user.wins}</span>
                       {"-"}
                       <span className="text-destructive">{user.losses}</span>
+                      {"-"}
+                      <span className="text-muted-foreground">{user.pushes}</span>
                     </TableCell>
                     <TableCell className="text-center font-mono">
                       {user.winRate.toFixed(0)}%
@@ -488,7 +498,10 @@ function GroupActivityItem({
   let statusText: string
   let statusColor: string
 
-  if (bet.status === "settled" && bet.winnerId) {
+  if (bet.status === "settled" && bet.push) {
+    statusText = "Push"
+    statusColor = "text-muted-foreground"
+  } else if (bet.status === "settled" && bet.winnerId) {
     const winnerName =
       bet.winnerId === bet.creatorId ? bet.creatorName : (bet.takerName ?? "Unknown")
     statusText = winnerName.split(" ")[0] + " won"

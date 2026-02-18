@@ -11,3 +11,21 @@ node_modules/
 
 .firebase/
 out/
+
+# macOS notifier
+macos-notifier/.env
+macos-notifier/serviceAccountKey.json
+macos-notifier/node_modules/
+macos-notifier/*.log
+macos-notifier/notifications/
+
+# Universal notifier
+universal-notifier/.env
+universal-notifier/serviceAccountKey.json
+universal-notifier/node_modules/
+universal-notifier/*.log
+universal-notifier/desktop-companion/.env
+universal-notifier/desktop-companion/node_modules/
+universal-notifier/desktop-companion/*.log
+
+serviceAccountKey.json

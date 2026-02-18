@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { doc, onSnapshot, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore"
 import { db } from "@/lib/firebase"
+import { createNotification } from "@/lib/notifications"
 import { useAuth } from "@/lib/auth-context"
 import { useRouter } from "@/lib/router-context"
 import type { Bet } from "@/lib/types"
@@ -134,6 +135,19 @@ export function BetDetailView({ betId }: { betId: string }) {
         takerPhoto: user.photoURL ?? null,
         status: "taken",
       })
+
+      // Create notification for external services (e.g., Teams)
+      await createNotification({
+        type: "bet_taken",
+        betId: bet.id,
+        betDescription: bet.description,
+        betAmount: bet.amount,
+        creatorName: bet.creatorName,
+        creatorPhoto: bet.creatorPhoto,
+        takerName: user.displayName ?? "Anonymous",
+        takerPhoto: user.photoURL ?? null,
+      })
+
       toast.success("You took the bet!")
     } catch {
       toast.error("Failed to take bet.")
@@ -148,12 +162,31 @@ export function BetDetailView({ betId }: { betId: string }) {
     try {
       await updateDoc(doc(db, "bets", bet.id), {
         winnerId,
+        push: false,
         declaredBy: user.uid,
         status: "pending_resolution",
       })
       toast.success("Winner declared! Waiting for confirmation.")
     } catch {
       toast.error("Failed to declare winner.")
+    } finally {
+      setActing(false)
+    }
+  }
+
+  const handleDeclarePush = async () => {
+    if (!user) return
+    setActing(true)
+    try {
+      await updateDoc(doc(db, "bets", bet.id), {
+        winnerId: null,
+        push: true,
+        declaredBy: user.uid,
+        status: "pending_resolution",
+      })
+      toast.success("Push declared! Waiting for confirmation.")
+    } catch {
+      toast.error("Failed to declare push.")
     } finally {
       setActing(false)
     }
@@ -182,6 +215,7 @@ export function BetDetailView({ betId }: { betId: string }) {
     try {
       await updateDoc(doc(db, "bets", bet.id), {
         winnerId: null,
+        push: false,
         declaredBy: null,
         status: "taken",
       })
@@ -287,7 +321,25 @@ export function BetDetailView({ betId }: { betId: string }) {
           </div>
 
           {/* Settled Result */}
-          {bet.status === "settled" && winnerName && (
+          {bet.status === "settled" && bet.push && (
+            <>
+              <Separator />
+              <div className="flex items-center gap-3 rounded-lg bg-muted/50 border border-border p-4">
+                <Handshake className="h-6 w-6 text-muted-foreground" />
+                <div>
+                  <p className="font-semibold">
+                    Push &mdash; no winner
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {bet.settledAt
+                      ? "Settled on " + bet.settledAt.toDate().toLocaleDateString()
+                      : "Settled"}
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
+          {bet.status === "settled" && !bet.push && winnerName && (
             <>
               <Separator />
               <div className="flex items-center gap-3 rounded-lg gradient-primary-subtle border border-primary/20 p-4">
@@ -421,6 +473,15 @@ export function BetDetailView({ betId }: { betId: string }) {
                     </Button>
                   )}
                 </div>
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={handleDeclarePush}
+                  disabled={acting}
+                >
+                  <Handshake className="h-4 w-4" />
+                  Push (Tie)
+                </Button>
               </div>
             )}
 
@@ -429,9 +490,10 @@ export function BetDetailView({ betId }: { betId: string }) {
               <>
                 {bet.declaredBy === user?.uid ? (
                   <p className="text-sm text-muted-foreground text-center py-2">
-                    {"You declared "}
-                    <span className="font-semibold text-foreground">{winnerName}</span>
-                    {" as the winner. Waiting for confirmation..."}
+                    {bet.push
+                      ? "You declared this bet as a Push. Waiting for confirmation..."
+                      : <>{"You declared "}<span className="font-semibold text-foreground">{winnerName}</span>{" as the winner. Waiting for confirmation..."}</>
+                    }
                   </p>
                 ) : (
                   <div className="flex flex-col gap-3">
@@ -441,9 +503,10 @@ export function BetDetailView({ betId }: { betId: string }) {
                           ? bet.creatorName
                           : bet.takerName}
                       </span>
-                      {" declared "}
-                      <span className="font-semibold text-primary">{winnerName}</span>
-                      {" as the winner."}
+                      {bet.push
+                        ? " declared this bet as a Push."
+                        : <>{" declared "}<span className="font-semibold text-primary">{winnerName}</span>{" as the winner."}</>
+                      }
                     </p>
                     <div className="flex flex-col gap-2 sm:flex-row">
                       <Button

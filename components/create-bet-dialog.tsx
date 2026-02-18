@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useAuth } from "@/lib/auth-context"
 import { collection, addDoc, serverTimestamp } from "firebase/firestore"
 import { db } from "@/lib/firebase"
+import { createNotification } from "@/lib/notifications"
 import { toast } from "sonner"
 import { Plus } from "lucide-react"
 
@@ -39,7 +40,7 @@ export function CreateBetDialog() {
 
     setSubmitting(true)
     try {
-      await addDoc(collection(db, "bets"), {
+      const betRef = await addDoc(collection(db, "bets"), {
         creatorId: user.uid,
         creatorName: user.displayName ?? "Anonymous",
         creatorPhoto: user.photoURL ?? null,
@@ -55,6 +56,17 @@ export function CreateBetDialog() {
         createdAt: serverTimestamp(),
         settledAt: null,
       })
+
+      // Create notification for external services (e.g., Teams)
+      await createNotification({
+        type: "bet_created",
+        betId: betRef.id,
+        betDescription: description.trim(),
+        betAmount: parsedAmount,
+        creatorName: user.displayName ?? "Anonymous",
+        creatorPhoto: user.photoURL ?? null,
+      })
+
       toast.success("Bet created!")
       setDescription("")
       setAmount("")
