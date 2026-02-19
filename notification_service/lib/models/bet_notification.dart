@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class BetNotification {
   final String id;
   final String type; // "bet_created" | "bet_taken"
@@ -43,10 +45,8 @@ class BetNotification {
 
   static DateTime? _parseTimestamp(dynamic value) {
     if (value == null) return null;
-    // dart_firebase_admin returns Timestamp objects with seconds/nanoseconds
-    if (value is Map) {
-      final seconds = value['_seconds'] as int? ?? value['seconds'] as int? ?? 0;
-      return DateTime.fromMillisecondsSinceEpoch(seconds * 1000);
+    if (value is Timestamp) {
+      return value.toDate();
     }
     return null;
   }

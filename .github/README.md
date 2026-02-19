@@ -40,27 +40,58 @@ firebase deploy --only firestore
 
 ## Notification Service
 
-A native macOS menu bar app that connects directly to Firestore and shows desktop notifications when bets are created or taken. No Docker, no browser tab -- just a menu bar icon.
+A native macOS menu bar app that connects directly to Firestore and shows desktop notifications when bets are created or taken. Uses Google Sign-In with invitation-based authorization (same as the web app).
+
+### Prerequisites
+
+- Flutter SDK
+- CocoaPods (`brew install cocoapods`)
+- Apple Developer ID certificate (for code signing)
+- Firebase project with Google Auth enabled
+
+### First-time project setup
+
+Run `flutterfire configure` in the `notification_service/` directory to generate platform-specific Firebase config files:
+
+```bash
+cd notification_service
+flutterfire configure
+```
+
+This generates `lib/firebase_options.dart` and `macos/Runner/GoogleService-Info.plist`.
+
+### Run locally
+
+```bash
+cd notification_service
+flutter pub get
+flutter run -d macos
+```
+
+### Build from source
+
+```bash
+cd notification_service
+flutter pub get
+flutter build macos --release
+
+# Sign the app with your Developer ID certificate
+codesign --force --verbose \
+  --sign "Developer ID Application: <YOUR_NAME> (<TEAM_ID>)" \
+  --deep --options runtime \
+  "build/macos/Build/Products/Release/notification_service.app"
+```
 
 ### Install
 
-1. Double-click `BetClubNotifier.pkg` and follow the prompts. This installs **BetClub Notifier.app** to `/Applications`.
+Copy the signed app to `/Applications`:
 
-2. Get the `serviceAccountKey.json` from another team member (or download it from the [Firebase console](https://console.firebase.google.com) under Project Settings > Service Accounts). Place it in your home directory:
+```bash
+cp -R notification_service/build/macos/Build/Products/Release/notification_service.app \
+  "/Applications/BetClub Notifier.app"
+```
 
-   ```
-   ~/serviceAccountKey.json
-   ```
-
-3. Open the app:
-
-   ```bash
-   open "/Applications/BetClub Notifier.app"
-   ```
-
-   If the key isn't found, a dialog will tell you where to put it with an option to retry.
-
-4. The app runs in your **menu bar** (no Dock icon, no window). Click the icon to see status, toggle debug logging, view logs, or quit.
+On first launch, a sign-in window appears. Sign in with a Google account that has been invited to BetClub. After authorization, the window hides and the app runs in the menu bar.
 
 ### Auto-start at login
 
@@ -95,49 +126,27 @@ launchctl unload ~/Library/LaunchAgents/com.betclub.notifier.plist
 rm ~/Library/LaunchAgents/com.betclub.notifier.plist
 ```
 
-### Build from source
-
-Requires Flutter and CocoaPods (`brew install cocoapods`).
-
-```bash
-cd notification_service
-flutter pub get
-flutter build macos --release
-
-# Package as .pkg installer
-rm -rf build/pkg_root
-mkdir -p build/pkg_root/Applications
-cp -R build/macos/Build/Products/Release/notification_service.app \
-  "build/pkg_root/Applications/BetClub Notifier.app"
-
-pkgbuild \
-  --root build/pkg_root \
-  --identifier com.betclub.notifier \
-  --version 1.0.0 \
-  --install-location / \
-  build/BetClubNotifier.pkg
-```
-
-The resulting `.pkg` will be at `notification_service/build/BetClubNotifier.pkg`.
-
 ### How it works
 
+- On launch, checks for an existing Firebase Auth session (auto-authenticates returning users)
+- If no session, shows a sign-in window with Google Sign-In
+- Checks the `invitations/{email}` collection to verify authorization
 - Polls Firestore every 10 seconds for unprocessed notifications
 - Shows native macOS notifications for new bets
 - Marks each notification as `processed: true` in Firestore
-- On first launch, notifications older than 5 minutes are silently marked processed (no flood)
-- Logs written to `~/Library/Logs/BetClubNotifier/notifier.log`
+- On first poll, notifications older than 5 minutes are silently marked processed (no flood)
+- Menu bar shows user email, sign-out option, debug logging toggle, and quit
 
 ### Troubleshooting
 
-**"Service Account Key Not Found" dialog** -- place `serviceAccountKey.json` in your home directory (`~/serviceAccountKey.json`) and click Try Again.
-
-**No menu bar icon** -- check the logs:
-```bash
-cat ~/Library/Logs/BetClubNotifier/notifier.log
-```
+**"Not Authorized" after sign-in** -- your Google account needs an invitation. Ask a BetClub admin to invite your email address.
 
 **macOS blocks the app** -- go to System Settings > Privacy & Security, scroll down, and click "Open Anyway" next to BetClub Notifier.
+
+**Logs** -- stdout/stderr are captured by launchd if using the LaunchAgent:
+```bash
+cat /tmp/com.betclub.notifier.stdout.log
+```
 
 ### Uninstall
 

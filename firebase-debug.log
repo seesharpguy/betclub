@@ -284,3 +284,129 @@
 [debug] [2026-02-18T22:52:32.172Z] <<< [apiv2][body] POST https://firestore.googleapis.com/v1/projects/betclub-not-fightclub/databases/(default)/documents:runQuery [{"transaction":"EWyhqeGBSjC3IlkAO20ojCHDrrUMQNqKMEmWN2pRQIVCg5VADWoQx+kGpcT0fh0lx7Zo9+G9H1MRGpE7LcYVnBFaNj4Kw9wLRH4HaWpHcDvYu9NeSUH5aFMZ4aD6PEr4woOlCQ=="},{"readTime":"2026-02-18T22:52:32.086Z","explainMetrics":{"planSummary":{"indexesUsed":[{"properties":"(processed ASC, __name__ ASC)","query_scope":"Collection"}]},"executionStats":{"executionDuration":"0.013253s","readOperations":"1","debugStats":{"index_entries_scanned":"0","documents_scanned":"0","billing_details":{"index_entries_billable":"0","documents_billable":"0","min_query_cost":"1","small_ops":"0"}}}}}]
 [debug] [2026-02-18T22:52:32.305Z] <<< [apiv2][status] POST https://firestore.googleapis.com/v1/projects/betclub-not-fightclub/databases/(default)/documents:runQuery 400
 [debug] [2026-02-18T22:52:32.305Z] <<< [apiv2][body] POST https://firestore.googleapis.com/v1/projects/betclub-not-fightclub/databases/(default)/documents:runQuery [{"error":{"code":400,"message":"The query requires an index. You can create it here: https://console.firebase.google.com/v1/r/project/betclub-not-fightclub/firestore/indexes?create_composite=Cltwcm9qZWN0cy9iZXRjbHViLW5vdC1maWdodGNsdWIvZGF0YWJhc2VzLyhkZWZhdWx0KS9jb2xsZWN0aW9uR3JvdXBzL25vdGlmaWNhdGlvbnMvaW5kZXhlcy9fEAEaDQoJcHJvY2Vzc2VkEAEaDQoJY3JlYXRlZEF0EAIaDAoIX19uYW1lX18QAg","status":"FAILED_PRECONDITION"}}]
+[debug] [2026-02-19T12:29:10.845Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-19T12:29:10.848Z] > authorizing via signed-in user (ryan.r.sites@gmail.com)
+[debug] [2026-02-19T12:29:10.848Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-19T12:29:10.848Z] > authorizing via signed-in user (ryan.r.sites@gmail.com)
+[debug] [2026-02-19T12:29:10.848Z] Checked if tokens are valid: false, expires at: 1771458744301
+[debug] [2026-02-19T12:29:10.849Z] Checked if tokens are valid: false, expires at: 1771458744301
+[debug] [2026-02-19T12:29:10.849Z] > refreshing access token with scopes: []
+[debug] [2026-02-19T12:29:10.849Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-02-19T12:29:10.849Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-19T12:29:10.861Z] Checked if tokens are valid: false, expires at: 1771458744301
+[debug] [2026-02-19T12:29:10.861Z] Checked if tokens are valid: false, expires at: 1771458744301
+[debug] [2026-02-19T12:29:10.861Z] > refreshing access token with scopes: []
+[debug] [2026-02-19T12:29:10.861Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-02-19T12:29:10.861Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-19T12:29:10.862Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-19T12:29:10.862Z] > authorizing via signed-in user (ryan.r.sites@gmail.com)
+[debug] [2026-02-19T12:29:10.862Z] Checked if tokens are valid: false, expires at: 1771458744301
+[debug] [2026-02-19T12:29:10.862Z] Checked if tokens are valid: false, expires at: 1771458744301
+[debug] [2026-02-19T12:29:10.862Z] > refreshing access token with scopes: []
+[debug] [2026-02-19T12:29:10.862Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-02-19T12:29:10.862Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-19T12:29:11.064Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-02-19T12:29:11.064Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-19T12:29:11.080Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo [none]
+[debug] [2026-02-19T12:29:11.082Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-02-19T12:29:11.082Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-19T12:29:11.094Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo [none]
+[debug] [2026-02-19T12:29:11.095Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-02-19T12:29:11.095Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-19T12:29:11.105Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo [none]
+[debug] [2026-02-19T12:29:11.333Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo 200
+[debug] [2026-02-19T12:29:11.333Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo {"name":"projects/betclub-not-fightclub/billingInfo","projectId":"betclub-not-fightclub","billingAccountName":"billingAccounts/019A51-9ADDDB-92317C","billingEnabled":true}
+[debug] [2026-02-19T12:29:11.339Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.339Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.345Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.345Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.345Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.345Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.345Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebasedataconnect.googleapis.com [none]
+[debug] [2026-02-19T12:29:11.345Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebasedataconnect.googleapis.com  x-goog-user-project=betclub-not-fightclub
+[debug] [2026-02-19T12:29:11.346Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseapphosting.googleapis.com [none]
+[debug] [2026-02-19T12:29:11.346Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseapphosting.googleapis.com  x-goog-user-project=betclub-not-fightclub
+[debug] [2026-02-19T12:29:11.346Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseio.com [none]
+[debug] [2026-02-19T12:29:11.346Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseio.com  x-goog-user-project=betclub-not-fightclub
+[debug] [2026-02-19T12:29:11.365Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.365Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.365Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseappdistribution.googleapis.com [none]
+[debug] [2026-02-19T12:29:11.365Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseappdistribution.googleapis.com  x-goog-user-project=betclub-not-fightclub
+[debug] [2026-02-19T12:29:11.370Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo 200
+[debug] [2026-02-19T12:29:11.370Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo {"name":"projects/betclub-not-fightclub/billingInfo","projectId":"betclub-not-fightclub","billingAccountName":"billingAccounts/019A51-9ADDDB-92317C","billingEnabled":true}
+[debug] [2026-02-19T12:29:11.374Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.374Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.375Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.375Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.375Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.376Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.376Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebasedataconnect.googleapis.com [none]
+[debug] [2026-02-19T12:29:11.376Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebasedataconnect.googleapis.com  x-goog-user-project=betclub-not-fightclub
+[debug] [2026-02-19T12:29:11.376Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseapphosting.googleapis.com [none]
+[debug] [2026-02-19T12:29:11.376Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseapphosting.googleapis.com  x-goog-user-project=betclub-not-fightclub
+[debug] [2026-02-19T12:29:11.376Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseio.com [none]
+[debug] [2026-02-19T12:29:11.376Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseio.com  x-goog-user-project=betclub-not-fightclub
+[debug] [2026-02-19T12:29:11.387Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.387Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.387Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseappdistribution.googleapis.com [none]
+[debug] [2026-02-19T12:29:11.387Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseappdistribution.googleapis.com  x-goog-user-project=betclub-not-fightclub
+[debug] [2026-02-19T12:29:11.388Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo 200
+[debug] [2026-02-19T12:29:11.389Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo {"name":"projects/betclub-not-fightclub/billingInfo","projectId":"betclub-not-fightclub","billingAccountName":"billingAccounts/019A51-9ADDDB-92317C","billingEnabled":true}
+[debug] [2026-02-19T12:29:11.389Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.389Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.390Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.390Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.390Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.390Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.390Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebasedataconnect.googleapis.com [none]
+[debug] [2026-02-19T12:29:11.390Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebasedataconnect.googleapis.com  x-goog-user-project=betclub-not-fightclub
+[debug] [2026-02-19T12:29:11.390Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseapphosting.googleapis.com [none]
+[debug] [2026-02-19T12:29:11.390Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseapphosting.googleapis.com  x-goog-user-project=betclub-not-fightclub
+[debug] [2026-02-19T12:29:11.390Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseio.com [none]
+[debug] [2026-02-19T12:29:11.390Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseio.com  x-goog-user-project=betclub-not-fightclub
+[debug] [2026-02-19T12:29:11.401Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.402Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.402Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseappdistribution.googleapis.com [none]
+[debug] [2026-02-19T12:29:11.402Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseappdistribution.googleapis.com  x-goog-user-project=betclub-not-fightclub
+[debug] [2026-02-19T12:29:11.615Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseapphosting.googleapis.com 200
+[debug] [2026-02-19T12:29:11.615Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2026-02-19T12:29:11.629Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseio.com 403
+[debug] [2026-02-19T12:29:11.629Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseio.com [omitted]
+[debug] [2026-02-19T12:29:11.663Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebasedataconnect.googleapis.com 200
+[debug] [2026-02-19T12:29:11.663Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2026-02-19T12:29:11.673Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseio.com 403
+[debug] [2026-02-19T12:29:11.673Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseio.com [omitted]
+[debug] [2026-02-19T12:29:11.693Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseappdistribution.googleapis.com 200
+[debug] [2026-02-19T12:29:11.693Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseappdistribution.googleapis.com [omitted]
+[debug] [2026-02-19T12:29:11.740Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseapphosting.googleapis.com 200
+[debug] [2026-02-19T12:29:11.740Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2026-02-19T12:29:11.774Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseapphosting.googleapis.com 200
+[debug] [2026-02-19T12:29:11.775Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2026-02-19T12:29:11.802Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebasedataconnect.googleapis.com 200
+[debug] [2026-02-19T12:29:11.802Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2026-02-19T12:29:11.823Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseappdistribution.googleapis.com 200
+[debug] [2026-02-19T12:29:11.824Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseappdistribution.googleapis.com [omitted]
+[debug] [2026-02-19T12:29:11.837Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-19T12:29:11.837Z] > authorizing via signed-in user (ryan.r.sites@gmail.com)
+[debug] [2026-02-19T12:29:11.837Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.837Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:11.838Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo [none]
+[debug] [2026-02-19T12:29:11.839Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebasedataconnect.googleapis.com 200
+[debug] [2026-02-19T12:29:11.839Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2026-02-19T12:29:11.840Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseappdistribution.googleapis.com 200
+[debug] [2026-02-19T12:29:11.840Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseappdistribution.googleapis.com [omitted]
+[debug] [2026-02-19T12:29:11.934Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo 200
+[debug] [2026-02-19T12:29:11.934Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo {"name":"projects/betclub-not-fightclub/billingInfo","projectId":"betclub-not-fightclub","billingAccountName":"billingAccounts/019A51-9ADDDB-92317C","billingEnabled":true}
+[debug] [2026-02-19T12:29:11.935Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-19T12:29:11.935Z] > authorizing via signed-in user (ryan.r.sites@gmail.com)
+[debug] [2026-02-19T12:29:14.092Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseio.com 403
+[debug] [2026-02-19T12:29:14.092Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/betclub-not-fightclub/services/firebaseio.com [omitted]
+[debug] [2026-02-19T12:29:14.097Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-19T12:29:14.098Z] > authorizing via signed-in user (ryan.r.sites@gmail.com)
+[debug] [2026-02-19T12:29:14.098Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:14.098Z] Checked if tokens are valid: true, expires at: 1771507750095
+[debug] [2026-02-19T12:29:14.098Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo [none]
+[debug] [2026-02-19T12:29:14.197Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo 200
+[debug] [2026-02-19T12:29:14.197Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/betclub-not-fightclub/billingInfo {"name":"projects/betclub-not-fightclub/billingInfo","projectId":"betclub-not-fightclub","billingAccountName":"billingAccounts/019A51-9ADDDB-92317C","billingEnabled":true}
+[debug] [2026-02-19T12:29:14.198Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-19T12:29:14.198Z] > authorizing via signed-in user (ryan.r.sites@gmail.com)

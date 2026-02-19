@@ -5,6 +5,8 @@ import 'log_service.dart';
 class TrayService {
   final SystemTray _systemTray = SystemTray();
   String _statusText = 'Starting...';
+  String? _userEmail;
+  void Function()? _onSignOut;
 
   Future<void> initialize() async {
     await _systemTray.initSystemTray(
@@ -25,6 +27,12 @@ class TrayService {
     log.info('Tray service initialized');
   }
 
+  void setUser(String? email, {void Function()? onSignOut}) {
+    _userEmail = email;
+    _onSignOut = onSignOut;
+    _updateMenu();
+  }
+
   Future<void> updateStatus(String status) async {
     _statusText = status;
     await _updateMenu();
@@ -32,30 +40,40 @@ class TrayService {
 
   Future<void> _updateMenu() async {
     final menu = Menu();
-    await menu.buildFrom([
+    final items = <MenuItemBase>[
       MenuItemLabel(label: 'BetClub Notifier', enabled: false),
       MenuSeparator(),
-      MenuItemLabel(label: _statusText, enabled: false),
-      MenuSeparator(),
-      MenuItemLabel(
-        label: 'Debug Logging: ${log.debugEnabled ? "ON" : "OFF"}',
-        onClicked: (menuItem) {
-          log.setDebug(!log.debugEnabled);
-          _updateMenu();
-        },
-      ),
-      MenuItemLabel(
-        label: 'View Logs',
-        onClicked: (menuItem) {
-          Process.run('open', [log.logPath]);
-        },
-      ),
-      MenuSeparator(),
-      MenuItemLabel(
-        label: 'Quit',
-        onClicked: (menuItem) => exit(0),
-      ),
-    ]);
+    ];
+
+    if (_userEmail != null) {
+      items.add(MenuItemLabel(label: _userEmail!, enabled: false));
+      items.add(MenuSeparator());
+    }
+
+    items.add(MenuItemLabel(label: _statusText, enabled: false));
+    items.add(MenuSeparator());
+    items.add(MenuItemLabel(
+      label: 'Debug Logging: ${log.debugEnabled ? "ON" : "OFF"}',
+      onClicked: (menuItem) {
+        log.setDebug(!log.debugEnabled);
+        _updateMenu();
+      },
+    ));
+
+    if (_onSignOut != null) {
+      items.add(MenuItemLabel(
+        label: 'Sign Out',
+        onClicked: (menuItem) => _onSignOut!(),
+      ));
+    }
+
+    items.add(MenuSeparator());
+    items.add(MenuItemLabel(
+      label: 'Quit',
+      onClicked: (menuItem) => exit(0),
+    ));
+
+    await menu.buildFrom(items);
     await _systemTray.setContextMenu(menu);
   }
 }

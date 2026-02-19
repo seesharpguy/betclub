@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>640099210164-0em7vblhm6olklv5h9ui0c88n61u1em1.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.640099210164-0em7vblhm6olklv5h9ui0c88n61u1em1</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAa5Xhu4V9i4vPdFS3OirR8XPE1Q9C9RgU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>640099210164</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.betclub.betNotifier</string>
+	<key>PROJECT_ID</key>
+	<string>betclub-not-fightclub</string>
+	<key>STORAGE_BUCKET</key>
+	<string>betclub-not-fightclub.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:640099210164:ios:c11d113563832a80da18e1</string>
+</dict>
+</plist>
