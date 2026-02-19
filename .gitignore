@@ -29,3 +29,9 @@ universal-notifier/desktop-companion/node_modules/
 universal-notifier/desktop-companion/*.log
 
 serviceAccountKey.json
+
+# Flutter notification service
+notification_service/build/
+notification_service/.dart_tool/
+notification_service/.packages
+notification_service/serviceAccountKey.json
